@@ -1,0 +1,55 @@
+#-*- coding:UTF-8 -*-
+import time
+import sys
+print('''
+***************************************
+**********用户电话号码管理系统*********
+***************欢迎使用****************
+(程序运行中输入‘q’或‘Q’则退出程序)
+''')
+try:
+    file = open('d:\\userinfo.txl','r')
+except FileNotFoundError:
+    print('该文件不存在，正在新建！')
+    file = open('d:\\userinfo.txl','w')
+    print("...........")
+    time.sleep(2)
+    print("文件新建完成！")
+finally:
+    file.close()
+while 1:
+    userName = input("请输入用户名：").strip()
+    if userName.upper() == 'Q':
+        print("程序退出！")
+        sys.exit()
+    if userName!='':    
+        file = open('d:\\userinfo.txl','r')
+        for i in file.readlines():
+            i = i.strip('\n')
+            a = i.split('\t')
+            if a[0]==userName:
+                print("用户“%s”的电话号码为：%s"%(userName,a[-1]))
+                print()
+                break
+        else:
+            file.close()
+            print("该用户没有找到！")
+            tel = input("请输入电话：").strip()
+            while 1:
+                if tel.upper() == 'Q':
+                    print("程序退出！")
+                    sys.exit()
+                try:
+                    telno = eval(tel)
+                    if type(telno)==int:
+                        break
+                    else:
+                        tel = input("电话不合法，请重新输入电话：").strip()
+                except:
+                    tel = input("电话不合法，请重新输入电话：").strip()    
+            f = open('d:\\userinfo.txl','a')
+            f.write('%s\t%s\n'%(userName,tel))
+            print("新用户添加成功！用户为：%s 电话号码为：%s\n"%(userName,telno))
+            f.close()
+    else:
+        print("输入不合法！\n")
